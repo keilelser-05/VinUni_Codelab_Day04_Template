@@ -71,16 +71,21 @@ def submit_support_ticket(customer_name: str, issue_description: str, priority: 
 # ---------------------------------------------------------------------------
 
 TOOL_DEFINITIONS = [
-    # TODO: Thêm schema cho "search_product_catalog"
-    # TODO: Thêm schema cho "submit_support_ticket"
-]
+    {"name": "search_product_catalog", "description": "Tra cứu catalog mẫu Vingroup theo danh mục và giá tối đa VNĐ.",
+     "parameters": {"type": "object", "properties": {
+         "category": {"type": "string", "enum": ["xe_dien", "du_lich"]},
+         "max_price": {"type": "integer", "minimum": 0}},
+         "required": ["category"], "additionalProperties": False}},
+    {"name": "submit_support_ticket", "description": "Tạo và lưu phiếu hỗ trợ cục bộ; không gửi đến Vingroup thật.",
+     "parameters": {"type": "object", "properties": {
+         "customer_name": {"type": "string", "minLength": 1},
+         "issue_description": {"type": "string", "minLength": 1},
+         "priority": {"type": "string", "enum": ["low", "medium", "high"], "default": "medium"}},
+         "required": ["customer_name", "issue_description"], "additionalProperties": False}}
 
 
 # ---------------------------------------------------------------------------
 # TOOL_MAP — Ánh xạ tên tool → hàm thực thi
 # ---------------------------------------------------------------------------
 
-TOOL_MAP = {
-    "search_product_catalog": search_product_catalog,
-    "submit_support_ticket": submit_support_ticket
-}
+TOOL_MAP = {"search_product_catalog": search_product_catalog, "submit_support_ticket": submit_support_ticket}
